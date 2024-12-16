@@ -1,4 +1,4 @@
-output "vpc_id4" {
+output "vpc_id" {
   description = "VPC ID"
   value       = module.vpc.vpc_id
 }
