@@ -34,7 +34,7 @@ variable "max_ttl" {
 variable "price_class" {
   description = "Price class for CloudFront distribution."
   type        = string
-  default     = "PriceClass_100" # Options: PriceClass_100, PriceClass_200, PriceClass_All
+  default     = "PriceClass_200" # Options: PriceClass_100, PriceClass_200, PriceClass_All
 }
 
 variable "tags" {

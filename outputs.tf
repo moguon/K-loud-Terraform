@@ -29,6 +29,11 @@ output "nat_gateway_id" {
   value       = module.vpc.nat_gateway_id
 }
 
+output "acm_certificate_arn" {
+  description = "The ARN of the ACM certificate"
+  value       = module.acm.certificate_arn
+}
+
 output "cloudfront_distribution_id" {
   description = "The ID of the CloudFront distribution"
   value       = module.cloudfront.cloudfront_distribution_id
@@ -37,6 +42,16 @@ output "cloudfront_distribution_id" {
 output "cloudfront_domain_name" {
   description = "The domain name of the CloudFront distribution"
   value       = module.cloudfront.cloudfront_domain_name
+}
+
+output "route53_hosted_zone_id" {
+  description = "The ID of the Route53 hosted zone"
+  value       = module.route53.hosted_zone_id
+}
+
+output "route53_record_fqdn" {
+  description = "The fully qualified domain name of the Route53 record"
+  value       = module.route53.record_fqdn
 }
 
 # output "s3_bucket_name" {

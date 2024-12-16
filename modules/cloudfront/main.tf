@@ -19,8 +19,8 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
   default_cache_behavior {
     target_origin_id       = "ALB-${var.alb_name}"
     viewer_protocol_policy = "redirect-to-https"
-    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
-    cached_methods         = ["GET", "HEAD"]
+    allowed_methods        = ["GET", "HEAD", "OPTIONS","POST"]
+    cached_methods         = ["GET", "HEAD","OPTIONS"]
 
     forwarded_values {
       query_string = true

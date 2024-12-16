@@ -17,6 +17,7 @@ module "vpc" {
   availability_zones  = ["ap-northeast-2a", "ap-northeast-2c"]
 }
 
+# ALB 생성
 module "alb" {
   source             = "./modules/alb"
   name               = "${var.project_name}-alb"
@@ -26,27 +27,27 @@ module "alb" {
 
 }
 
-// Create the VPC Endpoint for s3
-resource "aws_vpc_endpoint" "s3_endpoint" {
-  vpc_id        = module.vpc.vpc_id
-  service_name  = "com.amazonaws.ap-northeast-2.s3"
-  vpc_endpoint_type   = "Gateway"
-  route_table_ids = [module.vpc.private_route_table_id]
-  tags = {
-    Name = "${var.project_name}-s3-endpoint"
-  }
-}
+# // Create the VPC Endpoint for s3
+# resource "aws_vpc_endpoint" "s3_endpoint" {
+#   vpc_id        = module.vpc.vpc_id
+#   service_name  = "com.amazonaws.ap-northeast-2.s3"
+#   vpc_endpoint_type   = "Gateway"
+#   route_table_ids = [module.vpc.private_route_table_id]
+#   tags = {
+#     Name = "${var.project_name}-s3-endpoint"
+#   }
+# }
 
-// Create the VPC Endpoint for DynamoDB
-resource "aws_vpc_endpoint" "dynamodb_endpoint" {
-  vpc_id            = module.vpc.vpc_id
-  service_name      = "com.amazonaws.ap-northeast-2.dynamodb"
-  vpc_endpoint_type = "Gateway"
-  route_table_ids   = [module.vpc.private_route_table_id]
-  tags = {
-    Name = "${var.project_name}-dynamodb-endpoint"
-  }
-}
+# // Create the VPC Endpoint for DynamoDB
+# resource "aws_vpc_endpoint" "dynamodb_endpoint" {
+#   vpc_id            = module.vpc.vpc_id
+#   service_name      = "com.amazonaws.ap-northeast-2.dynamodb"
+#   vpc_endpoint_type = "Gateway"
+#   route_table_ids   = [module.vpc.private_route_table_id]
+#   tags = {
+#     Name = "${var.project_name}-dynamodb-endpoint"
+#   }
+# }
 
 // Create the VPC Endpoint for API Gateway
 resource "aws_vpc_endpoint" "api_gateway_endpoint" {
@@ -61,20 +62,44 @@ resource "aws_vpc_endpoint" "api_gateway_endpoint" {
   }
 }
 
-# --- CloudFront 모듈 호출 ---
+# ACM
+module "acm" {
+  source         = "./modules/acm"
+  domain_name    = var.domain_name
+  hosted_zone_id = module.route53.hosted_zone_id
+  tags           = {
+    Project = var.project_name
+    }
+}
+
+#CloudFront 생성
 module "cloudfront" {
   source             = "./modules/cloudfront"
   alb_name           = module.alb.name
   alb_dns_name       = module.alb.alb_dns_name
   acm_certificate_arn = var.acm_certificate_arn
-  aliases            = var.cloudfront_aliases
+  aliases            = ["${var.record_name}.${var.domain_name}"]
   default_ttl        = 3600
   max_ttl            = 86400
-  price_class        = "PriceClass_100"
+  price_class        = "PriceClass_200"
   tags               = {
     Project = var.project_name
   }
 }
+
+# Route53 
+module "route53" {
+  source                 = "./modules/route53"
+  domain_name            = var.domain_name
+  record_name            = var.record_name
+  cloudfront_domain_name = module.cloudfront.cloudfront_domain_name
+  cloudfront_zone_id     = "Z2FDTNDATAQYW2" # Default CloudFront Zone ID
+  tags = {
+    Project = var.project_name
+    }
+}
+
+
 
 # # S3 Bucket 생성
 # module "s3" {
@@ -106,12 +131,6 @@ module "cloudfront" {
 #   source      = "./modules/api-gateway"
 #   stage       = "prod"
 #   domain_name = "api.${var.project_name}.com"
-# }
-
-# # CloudFront 생성
-# module "cloudfront" {
-#   source      = "./modules/cloudfront"
-#   domain_name = "cdn.${var.project_name}.com"
 # }
 
 # # WAF (웹 방화벽) 생성
