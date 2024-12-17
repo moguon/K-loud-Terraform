@@ -3,12 +3,6 @@ variable "domain_name" {
   type        = string
 }
 
-variable "record_name" {
-  description = "The record name (e.g., www) to create in the Hosted Zone."
-  type        = string
-  default     = "www"
-}
-
 variable "cloudfront_domain_name" {
   description = "The CloudFront domain name (e.g., d12345.cloudfront.net) to alias."
   type        = string

@@ -6,6 +6,7 @@ variable "project_name" {
 variable "domain_name" {
   description = "The root domain name (e.g., example.com) for the application."
   type        = string
+  default = "ms.someone0705.xyz"
 }
 
 variable "record_name" {

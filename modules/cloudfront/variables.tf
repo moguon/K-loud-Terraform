@@ -16,7 +16,7 @@ variable "acm_certificate_arn" {
 variable "aliases" {
   description = "Custom domain names (CNAMEs) for the CloudFront distribution."
   type        = list(string)
-  default     = []
+  default     = ["ms.someone0705.xyz"]
 }
 
 variable "default_ttl" {

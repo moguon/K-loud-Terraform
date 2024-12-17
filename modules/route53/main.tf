@@ -3,7 +3,9 @@
 // ---
 resource "aws_route53_zone" "hosted_zone" {
   name = var.domain_name
-  tags = var.tags
+  tags = {
+    Project = var.project_name
+  }
 }
 
 // ---
@@ -11,7 +13,7 @@ resource "aws_route53_zone" "hosted_zone" {
 // ---
 resource "aws_route53_record" "cloudfront_record" {
   zone_id = aws_route53_zone.hosted_zone.zone_id
-  name    = var.record_name
+  name    = "${var.domain_name}"
   type    = "A"
 
   alias {
