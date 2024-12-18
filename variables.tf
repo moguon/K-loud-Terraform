@@ -9,8 +9,3 @@ variable "domain_name" {
   default = "ms.someone0705.xyz"
 }
 
-variable "record_name" {
-  description = "The subdomain name (e.g., www) for the CloudFront distribution."
-  type        = string
-  default     = "www"
-}

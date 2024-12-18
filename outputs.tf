@@ -34,6 +34,11 @@ output "acm_certificate_arn" {
   value       = module.acm.certificate_arn
 }
 
+output "vpc_endpoint_dns_name" {
+  description = "The DNS name of the VPC Endpoint for API Gateway"
+  value       = aws_vpc_endpoint.api_gateway_endpoint.dns_entry[0].dns_name
+}
+
 output "cloudfront_distribution_id" {
   description = "The ID of the CloudFront distribution"
   value       = module.cloudfront.cloudfront_distribution_id
@@ -53,14 +58,6 @@ output "route53_record_fqdn" {
   description = "The fully qualified domain name of the Route53 record"
   value       = module.route53.record_fqdn
 }
-
-# output "s3_bucket_name" {
-#   value = module.s3.bucket_name
-# }
-
-# output "dynamodb_table_name" {
-#   value = module.dynamodb.table_name
-# }
 
 # output "lambda_function_name" {
 #   value = module.lambda.function_name

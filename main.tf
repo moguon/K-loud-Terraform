@@ -62,6 +62,24 @@ resource "aws_vpc_endpoint" "api_gateway_endpoint" {
   }
 }
 
+// Associate VPC Endpoint with API Gateway 1
+resource "aws_api_gateway_rest_api" "api_gateway_1" {
+  name = "api-gateway-1"
+  endpoint_configuration {
+    types           = ["PRIVATE"]
+    vpc_endpoint_ids = [aws_vpc_endpoint.api_gateway_endpoint.id]
+  }
+}
+
+// Associate VPC Endpoint with API Gateway 2
+resource "aws_api_gateway_rest_api" "api_gateway_2" {
+  name = "api-gateway-2"
+  endpoint_configuration {
+    types           = ["PRIVATE"]
+    vpc_endpoint_ids = [aws_vpc_endpoint.api_gateway_endpoint.id]
+  }
+}
+
 # ACM
 module "acm" {
   source         = "./modules/acm"
@@ -74,17 +92,14 @@ module "acm" {
 
 #CloudFront 생성
 module "cloudfront" {
-  source             = "./modules/cloudfront"
-  alb_name           = module.alb.name
-  alb_dns_name       = module.alb.alb_dns_name
-  acm_certificate_arn = var.acm_certificate_arn
-  aliases            = ["${var.record_name}.${var.domain_name}"]
-  default_ttl        = 3600
-  max_ttl            = 86400
-  price_class        = "PriceClass_200"
-  tags               = {
+  source = "./modules/cloudfront"
+  acm_certificate_arn  = module.acm.certificate_arn
+  s3_bucket_name       = aws_s3_bucket.static_website.bucket
+  s3_bucket_domain_name = aws_s3_bucket.static_website.website_endpoint
+  vpc_endpoint_dns_name = aws_vpc_endpoint.api_gateway_dns_name
+  tags           = {
     Project = var.project_name
-  }
+    }
 }
 
 # Route53 
@@ -126,12 +141,6 @@ module "route53" {
 #   code_path     = "lambda/function.zip"
 # }
 
-# # API Gateway 생성
-# module "api-gateway" {
-#   source      = "./modules/api-gateway"
-#   stage       = "prod"
-#   domain_name = "api.${var.project_name}.com"
-# }
 
 # # WAF (웹 방화벽) 생성
 # module "waf" {

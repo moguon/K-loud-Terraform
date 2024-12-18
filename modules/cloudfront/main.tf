@@ -1,12 +1,25 @@
 // ---
 // Create the CloudFront Distribution
 // ---
-resource "aws_cloudfront_distribution" "alb_distribution" {
+resource "aws_cloudfront_distribution" "distribution" {
   enabled = true
 
+  // S3 Origin
   origin {
-    domain_name = var.alb_dns_name
-    origin_id   = "ALB-${var.alb_name}"
+    domain_name = var.s3_bucket_domain_name
+    origin_id   = "S3-${var.s3_bucket_name}"
+
+    s3_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only"
+    }
+  }
+
+  // API Gateway Origin
+  origin {
+    domain_name = var.vpc_endpoint_dns_name
+    origin_id   = "VPC-Endpoint"
 
     custom_origin_config {
       http_port              = 80
@@ -15,12 +28,32 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
     }
   }
 
-
+  // Default Cache Behavior (S3)
   default_cache_behavior {
-    target_origin_id       = "ALB-${var.alb_name}"
+    target_origin_id       = "S3-${var.s3_bucket_name}"
     viewer_protocol_policy = "redirect-to-https"
-    allowed_methods        = ["GET", "HEAD", "OPTIONS","POST"]
-    cached_methods         = ["GET", "HEAD","OPTIONS"]
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "none"
+      }
+    }
+
+    min_ttl                = 0
+    default_ttl = 3600
+    max_ttl     = 86400
+  }
+
+  // Additional Cache Behavior for API Gateway
+  ordered_cache_behavior {
+    path_pattern           = "/api/*"
+    target_origin_id       = "VPC-Endpoint"
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE", "PATCH"]
+    cached_methods         = ["GET", "HEAD"]
 
     forwarded_values {
       query_string = true
@@ -30,11 +63,11 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
     }
 
     min_ttl                = 0
-    default_ttl = var.default_ttl
-    max_ttl     = var.max_ttl
+    default_ttl = 3600
+    max_ttl     = 86400
   }
 
-  aliases = var.aliases
+  aliases    = var.aliases
   price_class = var.price_class
 
   restrictions {

@@ -1,44 +1,42 @@
-variable "alb_name" {
-  description = "The name of the ALB to connect to CloudFront."
-  type        = string
-}
-
-variable "alb_dns_name" {
-  description = "The DNS name of the ALB to use as an origin."
-  type        = string
-}
-
-variable "acm_certificate_arn" {
-  description = "The ARN of the ACM certificate to use for CloudFront HTTPS."
-  type        = string
-}
-
 variable "aliases" {
-  description = "Custom domain names (CNAMEs) for the CloudFront distribution."
+  description = "CloudFront distribution domain aliases"
   type        = list(string)
-  default     = ["ms.someone0705.xyz"]
-}
-
-variable "default_ttl" {
-  description = "Default time-to-live (TTL) for cache."
-  type        = number
-  default     = 3600
-}
-
-variable "max_ttl" {
-  description = "Maximum time-to-live (TTL) for cache."
-  type        = number
-  default     = 86400
+  default     = []
 }
 
 variable "price_class" {
-  description = "Price class for CloudFront distribution."
+  description = "CloudFront price class"
   type        = string
-  default     = "PriceClass_200" # Options: PriceClass_100, PriceClass_200, PriceClass_All
+  default     = "PriceClass_200"
 }
 
+
+// S3 Configuration
+variable "s3_bucket_name" {
+  description = "Name of the S3 bucket for static website hosting"
+  type        = string
+}
+
+variable "s3_bucket_domain_name" {
+  description = "Domain name of the S3 bucket for static website hosting"
+  type        = string
+}
+
+// VPC Endpoint Configuration
+variable "vpc_endpoint_dns_name" {
+  description = "DNS name of the VPC Endpoint for API Gateway"
+  type        = string
+}
+
+// ACM Certificate
+variable "acm_certificate_arn" {
+  description = "ACM Certificate ARN for CloudFront SSL"
+  type        = string
+}
+
+// Tags
 variable "tags" {
-  description = "Tags to apply to resources."
+  description = "Tags to apply to the CloudFront distribution"
   type        = map(string)
   default     = {}
 }
