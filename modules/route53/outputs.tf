@@ -1,19 +1,14 @@
-output "cloudfront_distribution_id" {
-  description = "The ID of the CloudFront distribution"
-  value       = aws_cloudfront_distribution.distribution.id
+output "route53_zone_name" {
+  description = "The name of the Route53 hosted zone"
+  value       = aws_route53_zone.zone.name
 }
 
-output "cloudfront_domain_name" {
-  description = "The domain name of the CloudFront distribution"
-  value       = aws_cloudfront_distribution.distribution.domain_name
+output "route53_cloudfront_alias" {
+  description = "The alias record for CloudFront"
+  value       = aws_route53_record.cloudfront_record.name
 }
 
-output "s3_bucket_name" {
-  description = "The name of the S3 bucket used for static website hosting"
-  value       = var.s3_bucket_name
-}
-
-output "vpc_endpoint_dns_name" {
-  description = "The DNS name of the VPC Endpoint connected to the API Gateway"
-  value       = var.vpc_endpoint_dns_name
+output "zone_id" {
+  description = "The ID of the Route53 Hosted Zone"
+  value       = aws_route53_zone.zone.zone_id
 }

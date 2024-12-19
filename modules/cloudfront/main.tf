@@ -6,13 +6,14 @@ resource "aws_cloudfront_distribution" "distribution" {
 
   // S3 Origin
   origin {
-    domain_name = var.s3_bucket_domain_name
+    domain_name = var.s3_website_endpoint
     origin_id   = "S3-${var.s3_bucket_name}"
 
-    s3_origin_config {
+    custom_origin_config { 
       http_port              = 80
       https_port             = 443
       origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1.2", "TLSv1.1"]
     }
   }
 
@@ -25,6 +26,7 @@ resource "aws_cloudfront_distribution" "distribution" {
       http_port              = 80
       https_port             = 443
       origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2", "TLSv1.1"]
     }
   }
 

@@ -1,21 +1,15 @@
-variable "hosted_zone_id" {
-  description = "The ID of the Route53 hosted zone."
+variable "domain_name" {
+  description = "The domain name to create the ACM certificate for"
   type        = string
 }
 
-variable "ttl" {
-  description = "TTL for the DNS validation records."
-  type        = number
-  default     = 300
-}
-
-variable "domain_name" {
-  description = "The primary domain name for the ACM certificate (e.g., example.com)."
+variable "route53_zone_id" {
+  description = "The ID of the Route53 Hosted Zone used for DNS validation"
   type        = string
 }
 
 variable "tags" {
-  description = "Tags to apply to all resources."
+  description = "Tags for the ACM certificate"
   type        = map(string)
   default     = {}
 }

@@ -10,15 +10,14 @@ variable "price_class" {
   default     = "PriceClass_200"
 }
 
-
 // S3 Configuration
 variable "s3_bucket_name" {
-  description = "Name of the S3 bucket for static website hosting"
+  description = "The name of the S3 bucket"
   type        = string
 }
 
-variable "s3_bucket_domain_name" {
-  description = "Domain name of the S3 bucket for static website hosting"
+variable "s3_website_endpoint" {
+  description = "The S3 website endpoint for static content"
   type        = string
 }
 

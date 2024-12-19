@@ -62,59 +62,43 @@ resource "aws_vpc_endpoint" "api_gateway_endpoint" {
   }
 }
 
-// Associate VPC Endpoint with API Gateway 1
-resource "aws_api_gateway_rest_api" "api_gateway_1" {
-  name = "api-gateway-1"
-  endpoint_configuration {
-    types           = ["PRIVATE"]
-    vpc_endpoint_ids = [aws_vpc_endpoint.api_gateway_endpoint.id]
-  }
-}
-
-// Associate VPC Endpoint with API Gateway 2
-resource "aws_api_gateway_rest_api" "api_gateway_2" {
-  name = "api-gateway-2"
-  endpoint_configuration {
-    types           = ["PRIVATE"]
-    vpc_endpoint_ids = [aws_vpc_endpoint.api_gateway_endpoint.id]
-  }
+# Route53 
+module "route53" {
+  source                 = "./modules/route53"
+  domain_name            = "ms.someone0705.xyz"
+  cloudfront_domain_name = module.cloudfront.cloudfront_domain_name
+  cloudfront_zone_id     = "Z2FDTNDATAQYW2" # Default CloudFront Zone ID
 }
 
 # ACM
 module "acm" {
   source         = "./modules/acm"
   domain_name    = var.domain_name
-  hosted_zone_id = module.route53.hosted_zone_id
+  route53_zone_id = module.route53.zone_id
   tags           = {
     Project = var.project_name
     }
+}
+
+module "iam" {
+  source = "./modules/iam"
+
+  project_name   = var.project_name
+  s3_bucket_arn  = "arn:aws:s3:::kloud-webpage" 
 }
 
 #CloudFront 생성
 module "cloudfront" {
   source = "./modules/cloudfront"
   acm_certificate_arn  = module.acm.certificate_arn
-  s3_bucket_name       = aws_s3_bucket.static_website.bucket
-  s3_bucket_domain_name = aws_s3_bucket.static_website.website_endpoint
-  vpc_endpoint_dns_name = aws_vpc_endpoint.api_gateway_dns_name
+  s3_bucket_name       = "kloud-webpage"
+  s3_website_endpoint = "kloud-webpage.s3-website.ap-northeast-2.amazonaws.com"
+  vpc_endpoint_dns_name = aws_vpc_endpoint.api_gateway_endpoint.dns_entry[0].dns_name
   tags           = {
     Project = var.project_name
     }
+  depends_on = [aws_vpc_endpoint.api_gateway_endpoint]
 }
-
-# Route53 
-module "route53" {
-  source                 = "./modules/route53"
-  domain_name            = var.domain_name
-  record_name            = var.record_name
-  cloudfront_domain_name = module.cloudfront.cloudfront_domain_name
-  cloudfront_zone_id     = "Z2FDTNDATAQYW2" # Default CloudFront Zone ID
-  tags = {
-    Project = var.project_name
-    }
-}
-
-
 
 # # S3 Bucket 생성
 # module "s3" {

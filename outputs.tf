@@ -51,13 +51,9 @@ output "cloudfront_domain_name" {
 
 output "route53_hosted_zone_id" {
   description = "The ID of the Route53 hosted zone"
-  value       = module.route53.hosted_zone_id
+  value       = module.route53.zone_id
 }
 
-output "route53_record_fqdn" {
-  description = "The fully qualified domain name of the Route53 record"
-  value       = module.route53.record_fqdn
-}
 
 # output "lambda_function_name" {
 #   value = module.lambda.function_name

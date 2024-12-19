@@ -14,8 +14,3 @@ variable "cloudfront_zone_id" {
   default     = "Z2FDTNDATAQYW2" # CloudFront's default zone ID (global)
 }
 
-variable "tags" {
-  description = "Tags to apply to all resources."
-  type        = map(string)
-  default     = {}
-}
