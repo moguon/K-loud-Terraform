@@ -1,7 +1,7 @@
 {
   "version": 4,
   "terraform_version": "1.9.8",
-  "serial": 354,
+  "serial": 350,
   "lineage": "3853d940-9653-5d29-6d50-d1fd1f8f2fc6",
   "outputs": {
     "acm_certificate_arn": {
@@ -9,11 +9,11 @@
       "type": "string"
     },
     "cloudfront_distribution_id": {
-      "value": "E335QVPSVCXR72",
+      "value": "EHC5YMT3VAWSQ",
       "type": "string"
     },
     "cloudfront_domain_name": {
-      "value": "dkig80szvcghf.cloudfront.net",
+      "value": "d2miwwhvzmngyp.cloudfront.net",
       "type": "string"
     },
     "nat_gateway_id": {
@@ -697,9 +697,9 @@
         {
           "schema_version": 1,
           "attributes": {
-            "aliases": null,
-            "arn": "arn:aws:cloudfront::941377148616:distribution/E335QVPSVCXR72",
-            "caller_reference": "terraform-20241219120352955900000001",
+            "aliases": [],
+            "arn": "arn:aws:cloudfront::941377148616:distribution/EHC5YMT3VAWSQ",
+            "caller_reference": "terraform-20241219062502072700000002",
             "comment": null,
             "continuous_deployment_policy_id": "",
             "custom_error_response": [],
@@ -745,15 +745,15 @@
               }
             ],
             "default_root_object": "",
-            "domain_name": "dkig80szvcghf.cloudfront.net",
+            "domain_name": "d2miwwhvzmngyp.cloudfront.net",
             "enabled": true,
-            "etag": "ECEFMHD3YDWXE",
+            "etag": "E39PXS9MQ46IB9",
             "hosted_zone_id": "Z2FDTNDATAQYW2",
             "http_version": "http2",
-            "id": "E335QVPSVCXR72",
+            "id": "EHC5YMT3VAWSQ",
             "in_progress_validation_batches": 0,
             "is_ipv6_enabled": false,
-            "last_modified_time": "2024-12-19 12:03:53.979 +0000 UTC",
+            "last_modified_time": "2024-12-19 11:51:56.705 +0000 UTC",
             "logging_config": [],
             "ordered_cache_behavior": [
               {
@@ -779,12 +779,18 @@
                     "cookies": [
                       {
                         "forward": "all",
-                        "whitelisted_names": null
+                        "whitelisted_names": []
                       }
                     ],
                     "headers": [],
                     "query_string": true,
-                    "query_string_cache_keys": []
+                    "query_string_cache_keys": [
+                      "UserID",
+                      "ownerId",
+                      "projectId",
+                      "projectOwnerId",
+                      "userId"
+                    ]
                   }
                 ],
                 "function_association": [],
@@ -797,8 +803,8 @@
                 "response_headers_policy_id": "",
                 "smooth_streaming": false,
                 "target_origin_id": "API-Gateway-1-Origin",
-                "trusted_key_groups": null,
-                "trusted_signers": null,
+                "trusted_key_groups": [],
+                "trusted_signers": [],
                 "viewer_protocol_policy": "redirect-to-https"
               },
               {
@@ -862,7 +868,7 @@
                   }
                 ],
                 "domain_name": "kloud-webpage.s3-website.ap-northeast-2.amazonaws.com",
-                "origin_access_control_id": "",
+                "origin_access_control_id": null,
                 "origin_id": "S3-kloud-webpage",
                 "origin_path": "",
                 "origin_shield": [],
@@ -1067,7 +1073,7 @@
             "alias": [
               {
                 "evaluate_target_health": false,
-                "name": "dkig80szvcghf.cloudfront.net",
+                "name": "d2miwwhvzmngyp.cloudfront.net",
                 "zone_id": "Z2FDTNDATAQYW2"
               }
             ],

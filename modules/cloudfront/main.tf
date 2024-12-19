@@ -17,18 +17,30 @@ resource "aws_cloudfront_distribution" "distribution" {
     }
   }
 
-  // API Gateway Origin
-  origin {
-    domain_name = var.vpc_endpoint_dns_name
-    origin_id   = "VPC-Endpoint"
+// API Gateway Origin
+ origin {
+    domain_name = var.api_gateway_1_endpoint
+    origin_id   = "API-Gateway-1-Origin"
 
     custom_origin_config {
       http_port              = 80
       https_port             = 443
       origin_protocol_policy = "https-only"
-      origin_ssl_protocols   = ["TLSv1.2", "TLSv1.1"]
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
+
+  # origin {
+  #   domain_name = var.api_gateway_2_endpoint
+  #   origin_id   = "API-Gateway-2-Origin"
+
+  #   custom_origin_config {
+  #     http_port              = 80
+  #     https_port             = 443
+  #     origin_protocol_policy = "https-only"
+  #     origin_ssl_protocols   = ["TLSv1.2", "TLSv1.1"]
+  #   }
+  # }
 
   // Default Cache Behavior (S3)
   default_cache_behavior {
@@ -49,12 +61,12 @@ resource "aws_cloudfront_distribution" "distribution" {
     max_ttl     = 86400
   }
 
-  // Additional Cache Behavior for API Gateway
+# Additional cache behavior for API Gateway 1
   ordered_cache_behavior {
-    path_pattern           = "/api/*"
-    target_origin_id       = "VPC-Endpoint"
+    path_pattern           = "/prod/*"
+    target_origin_id       = "API-Gateway-1-Origin"
     viewer_protocol_policy = "redirect-to-https"
-    allowed_methods        = ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE", "PATCH"]
+    allowed_methods        = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods         = ["GET", "HEAD"]
 
     forwarded_values {
@@ -64,19 +76,37 @@ resource "aws_cloudfront_distribution" "distribution" {
       }
     }
 
-    min_ttl                = 0
+    min_ttl     = 0
     default_ttl = 3600
     max_ttl     = 86400
   }
 
-  aliases    = var.aliases
-  price_class = var.price_class
+  # # Additional cache behavior for API Gateway 2
+  # ordered_cache_behavior {
+  #   path_pattern           = "/api2/*"
+  #   target_origin_id       = "API-Gateway-2-Origin"
+  #   viewer_protocol_policy = "redirect-to-https"
+  #   allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+  #   cached_methods         = ["GET", "HEAD"]
+
+  #   forwarded_values {
+  #     query_string = true
+  #     cookies {
+  #       forward = "all"
+  #     }
+  #   }
+
+  #   min_ttl     = 0
+  #   default_ttl = 3600
+  #   max_ttl     = 86400
+  # }
 
   restrictions {
     geo_restriction {
       restriction_type = "none"
     }
   }
+
 
   viewer_certificate {
     acm_certificate_arn = var.acm_certificate_arn

@@ -49,18 +49,18 @@ module "alb" {
 #   }
 # }
 
-// Create the VPC Endpoint for API Gateway
-resource "aws_vpc_endpoint" "api_gateway_endpoint" {
-  vpc_id              = module.vpc.vpc_id
-  service_name        = "com.amazonaws.ap-northeast-2.execute-api"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = module.vpc.private_subnet_ids
-  security_group_ids  = [aws_security_group.vpc_endpoint_sg.id]
-  private_dns_enabled = true
-  tags = {
-    Name = "${var.project_name}-api-gateway-endpoint"
-  }
-}
+# // Create the VPC Endpoint for API Gateway
+# resource "aws_vpc_endpoint" "api_gateway_endpoint" {
+#   vpc_id              = module.vpc.vpc_id
+#   service_name        = "com.amazonaws.ap-northeast-2.execute-api"
+#   vpc_endpoint_type   = "Interface"
+#   subnet_ids          = module.vpc.private_subnet_ids
+#   security_group_ids  = [aws_security_group.vpc_endpoint_sg.id]
+#   private_dns_enabled = true
+#   tags = {
+#     Name = "${var.project_name}-api-gateway-endpoint"
+#   }
+# }
 
 # Route53 
 module "route53" {
@@ -80,6 +80,7 @@ module "acm" {
     }
 }
 
+#IAM
 module "iam" {
   source = "./modules/iam"
 
@@ -93,30 +94,13 @@ module "cloudfront" {
   acm_certificate_arn  = module.acm.certificate_arn
   s3_bucket_name       = "kloud-webpage"
   s3_website_endpoint = "kloud-webpage.s3-website.ap-northeast-2.amazonaws.com"
-  vpc_endpoint_dns_name = aws_vpc_endpoint.api_gateway_endpoint.dns_entry[0].dns_name
+  api_gateway_1_endpoint = "nglpet7yod.execute-api.ap-northeast-2.amazonaws.com"
+  # api_gateway_2_endpoint = "1ezekx8bu3.execute-api.ap-northeast-2.amazonaws.com"
   tags           = {
     Project = var.project_name
     }
-  depends_on = [aws_vpc_endpoint.api_gateway_endpoint]
 }
 
-# # S3 Bucket 생성
-# module "s3" {
-#   source      = "./modules/s3"
-#   bucket_name = "${var.project_name}-bucket"
-#   tags = {
-#     Project = var.project_name
-#   }
-# }
-
-# # DynamoDB 생성
-# module "dynamodb" {
-#   source      = "./modules/dynamodb"
-#   table_name  = "${var.project_name}-table"
-#   tags = {
-#     Project = var.project_name
-#   }
-# }
 
 # # Lambda 함수 생성
 # module "lambda" {
@@ -132,8 +116,3 @@ module "cloudfront" {
 #   name   = "${var.project_name}-waf"
 # }
 
-# # IAM 역할 생성
-# module "iam" {
-#   source = "./modules/iam"
-#   name   = "${var.project_name}-iam-role"
-# }

@@ -18,7 +18,6 @@ output "public_route_table_id" {
   value       = module.vpc.public_route_table_id
 }
 
-
 output "private_route_table_id" {
   description = "Route table IDs for private subnets"
   value       = module.vpc.private_route_table_id
@@ -34,10 +33,10 @@ output "acm_certificate_arn" {
   value       = module.acm.certificate_arn
 }
 
-output "vpc_endpoint_dns_name" {
-  description = "The DNS name of the VPC Endpoint for API Gateway"
-  value       = aws_vpc_endpoint.api_gateway_endpoint.dns_entry[0].dns_name
-}
+# output "vpc_endpoint_dns_name" {
+#   description = "The DNS name of the VPC Endpoint for API Gateway"
+#   value       = aws_vpc_endpoint.api_gateway_endpoint.dns_entry[0].dns_name
+# }
 
 output "cloudfront_distribution_id" {
   description = "The ID of the CloudFront distribution"

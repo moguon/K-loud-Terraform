@@ -1,19 +1,11 @@
 {
   "version": 4,
   "terraform_version": "1.9.8",
-  "serial": 354,
+  "serial": 319,
   "lineage": "3853d940-9653-5d29-6d50-d1fd1f8f2fc6",
   "outputs": {
     "acm_certificate_arn": {
-      "value": "arn:aws:acm:us-east-1:941377148616:certificate/3f5a0bc0-4026-4685-a102-dc53b758bedd",
-      "type": "string"
-    },
-    "cloudfront_distribution_id": {
-      "value": "E335QVPSVCXR72",
-      "type": "string"
-    },
-    "cloudfront_domain_name": {
-      "value": "dkig80szvcghf.cloudfront.net",
+      "value": "arn:aws:acm:ap-northeast-2:941377148616:certificate/70b9dfab-064f-4f53-abee-28e6890383bc",
       "type": "string"
     },
     "nat_gateway_id": {
@@ -55,7 +47,11 @@
       ]
     },
     "route53_hosted_zone_id": {
-      "value": "Z0549365YNL797AGFSKN",
+      "value": "Z01864021CTC3EYU9MPP7",
+      "type": "string"
+    },
+    "vpc_endpoint_dns_name": {
+      "value": "vpce-0eaf222b2f4987574-7sqkeqdh.execute-api.ap-northeast-2.vpce.amazonaws.com",
       "type": "string"
     },
     "vpc_id": {
@@ -331,88 +327,64 @@
       ]
     },
     {
-      "module": "module.acm",
       "mode": "managed",
-      "type": "aws_acm_certificate",
-      "name": "certificate",
-      "provider": "module.acm.provider[\"registry.terraform.io/hashicorp/aws\"].us-east-1",
+      "type": "aws_security_group",
+      "name": "vpc_endpoint_sg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
       "instances": [
         {
-          "schema_version": 0,
+          "schema_version": 1,
           "attributes": {
-            "arn": "arn:aws:acm:us-east-1:941377148616:certificate/3f5a0bc0-4026-4685-a102-dc53b758bedd",
-            "certificate_authority_arn": "",
-            "certificate_body": null,
-            "certificate_chain": null,
-            "domain_name": "ms.someone0705.xyz",
-            "domain_validation_options": [
+            "arn": "arn:aws:ec2:ap-northeast-2:941377148616:security-group/sg-0db83fb730d9a0b7b",
+            "description": "Managed by Terraform",
+            "egress": [
               {
-                "domain_name": "ms.someone0705.xyz",
-                "resource_record_name": "_cbe3438076bdb67b7c3f7adc782c4a66.ms.someone0705.xyz.",
-                "resource_record_type": "CNAME",
-                "resource_record_value": "_d1b090123915ba24a853af17d34fb864.zfyfvmchrl.acm-validations.aws."
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
               }
             ],
-            "early_renewal_duration": "",
-            "id": "arn:aws:acm:us-east-1:941377148616:certificate/3f5a0bc0-4026-4685-a102-dc53b758bedd",
-            "key_algorithm": "RSA_2048",
-            "not_after": "2026-01-18T23:59:59Z",
-            "not_before": "2024-12-19T00:00:00Z",
-            "options": [
+            "id": "sg-0db83fb730d9a0b7b",
+            "ingress": [
               {
-                "certificate_transparency_logging_preference": "ENABLED"
+                "cidr_blocks": [
+                  "10.0.0.0/16"
+                ],
+                "description": "",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 443
               }
             ],
-            "pending_renewal": false,
-            "private_key": null,
-            "renewal_eligibility": "ELIGIBLE",
-            "renewal_summary": [],
-            "status": "ISSUED",
-            "subject_alternative_names": [
-              "ms.someone0705.xyz"
-            ],
+            "name": "terraform-20241218035051517400000001",
+            "name_prefix": "terraform-",
+            "owner_id": "941377148616",
+            "revoke_rules_on_delete": false,
             "tags": {
-              "Project": "K-loud"
+              "Name": "K-loud-endpoint-sg"
             },
             "tags_all": {
-              "Project": "K-loud"
+              "Name": "K-loud-endpoint-sg"
             },
-            "type": "AMAZON_ISSUED",
-            "validation_emails": [],
-            "validation_method": "DNS",
-            "validation_option": []
-          },
-          "sensitive_attributes": [
-            [
-              {
-                "type": "get_attr",
-                "value": "private_key"
-              }
-            ]
-          ],
-          "private": "bnVsbA=="
-        }
-      ]
-    },
-    {
-      "module": "module.acm",
-      "mode": "managed",
-      "type": "aws_acm_certificate_validation",
-      "name": "certificate_validation",
-      "provider": "module.acm.provider[\"registry.terraform.io/hashicorp/aws\"].us-east-1",
-      "instances": [
-        {
-          "schema_version": 0,
-          "attributes": {
-            "certificate_arn": "arn:aws:acm:us-east-1:941377148616:certificate/3f5a0bc0-4026-4685-a102-dc53b758bedd",
-            "id": "0001-01-01 00:00:00 +0000 UTC",
             "timeouts": null,
-            "validation_record_fqdns": null
+            "vpc_id": "vpc-041ee6ea677b14929"
           },
           "sensitive_attributes": [],
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo0NTAwMDAwMDAwMDAwfX0=",
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
           "dependencies": [
-            "module.acm.aws_acm_certificate.certificate"
+            "module.vpc.aws_vpc.vpc"
           ]
         }
       ]
@@ -436,7 +408,7 @@
             "geolocation_routing_policy": [],
             "geoproximity_routing_policy": [],
             "health_check_id": "",
-            "id": "Z0549365YNL797AGFSKN__cbe3438076bdb67b7c3f7adc782c4a66.ms.someone0705.xyz._CNAME",
+            "id": "Z01864021CTC3EYU9MPP7__cbe3438076bdb67b7c3f7adc782c4a66.ms.someone0705.xyz._CNAME",
             "latency_routing_policy": [],
             "multivalue_answer_routing_policy": false,
             "name": "_cbe3438076bdb67b7c3f7adc782c4a66.ms.someone0705.xyz",
@@ -447,7 +419,7 @@
             "ttl": 300,
             "type": "CNAME",
             "weighted_routing_policy": [],
-            "zone_id": "Z0549365YNL797AGFSKN"
+            "zone_id": "Z01864021CTC3EYU9MPP7"
           },
           "sensitive_attributes": [],
           "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjIifQ==",
@@ -688,289 +660,6 @@
       ]
     },
     {
-      "module": "module.cloudfront",
-      "mode": "managed",
-      "type": "aws_cloudfront_distribution",
-      "name": "distribution",
-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
-      "instances": [
-        {
-          "schema_version": 1,
-          "attributes": {
-            "aliases": null,
-            "arn": "arn:aws:cloudfront::941377148616:distribution/E335QVPSVCXR72",
-            "caller_reference": "terraform-20241219120352955900000001",
-            "comment": null,
-            "continuous_deployment_policy_id": "",
-            "custom_error_response": [],
-            "default_cache_behavior": [
-              {
-                "allowed_methods": [
-                  "GET",
-                  "HEAD"
-                ],
-                "cache_policy_id": "",
-                "cached_methods": [
-                  "GET",
-                  "HEAD"
-                ],
-                "compress": false,
-                "default_ttl": 3600,
-                "field_level_encryption_id": "",
-                "forwarded_values": [
-                  {
-                    "cookies": [
-                      {
-                        "forward": "none",
-                        "whitelisted_names": []
-                      }
-                    ],
-                    "headers": [],
-                    "query_string": false,
-                    "query_string_cache_keys": []
-                  }
-                ],
-                "function_association": [],
-                "lambda_function_association": [],
-                "max_ttl": 86400,
-                "min_ttl": 0,
-                "origin_request_policy_id": "",
-                "realtime_log_config_arn": "",
-                "response_headers_policy_id": "",
-                "smooth_streaming": false,
-                "target_origin_id": "S3-kloud-webpage",
-                "trusted_key_groups": [],
-                "trusted_signers": [],
-                "viewer_protocol_policy": "redirect-to-https"
-              }
-            ],
-            "default_root_object": "",
-            "domain_name": "dkig80szvcghf.cloudfront.net",
-            "enabled": true,
-            "etag": "ECEFMHD3YDWXE",
-            "hosted_zone_id": "Z2FDTNDATAQYW2",
-            "http_version": "http2",
-            "id": "E335QVPSVCXR72",
-            "in_progress_validation_batches": 0,
-            "is_ipv6_enabled": false,
-            "last_modified_time": "2024-12-19 12:03:53.979 +0000 UTC",
-            "logging_config": [],
-            "ordered_cache_behavior": [
-              {
-                "allowed_methods": [
-                  "DELETE",
-                  "GET",
-                  "HEAD",
-                  "OPTIONS",
-                  "PATCH",
-                  "POST",
-                  "PUT"
-                ],
-                "cache_policy_id": "",
-                "cached_methods": [
-                  "GET",
-                  "HEAD"
-                ],
-                "compress": false,
-                "default_ttl": 3600,
-                "field_level_encryption_id": "",
-                "forwarded_values": [
-                  {
-                    "cookies": [
-                      {
-                        "forward": "all",
-                        "whitelisted_names": null
-                      }
-                    ],
-                    "headers": [],
-                    "query_string": true,
-                    "query_string_cache_keys": []
-                  }
-                ],
-                "function_association": [],
-                "lambda_function_association": [],
-                "max_ttl": 86400,
-                "min_ttl": 0,
-                "origin_request_policy_id": "",
-                "path_pattern": "/api1/*",
-                "realtime_log_config_arn": "",
-                "response_headers_policy_id": "",
-                "smooth_streaming": false,
-                "target_origin_id": "API-Gateway-1-Origin",
-                "trusted_key_groups": null,
-                "trusted_signers": null,
-                "viewer_protocol_policy": "redirect-to-https"
-              },
-              {
-                "allowed_methods": [
-                  "GET",
-                  "HEAD",
-                  "OPTIONS"
-                ],
-                "cache_policy_id": "",
-                "cached_methods": [
-                  "GET",
-                  "HEAD"
-                ],
-                "compress": false,
-                "default_ttl": 3600,
-                "field_level_encryption_id": "",
-                "forwarded_values": [
-                  {
-                    "cookies": [
-                      {
-                        "forward": "all",
-                        "whitelisted_names": null
-                      }
-                    ],
-                    "headers": [],
-                    "query_string": true,
-                    "query_string_cache_keys": []
-                  }
-                ],
-                "function_association": [],
-                "lambda_function_association": [],
-                "max_ttl": 86400,
-                "min_ttl": 0,
-                "origin_request_policy_id": "",
-                "path_pattern": "/api2/*",
-                "realtime_log_config_arn": "",
-                "response_headers_policy_id": "",
-                "smooth_streaming": false,
-                "target_origin_id": "API-Gateway-2-Origin",
-                "trusted_key_groups": null,
-                "trusted_signers": null,
-                "viewer_protocol_policy": "redirect-to-https"
-              }
-            ],
-            "origin": [
-              {
-                "connection_attempts": 3,
-                "connection_timeout": 10,
-                "custom_header": [],
-                "custom_origin_config": [
-                  {
-                    "http_port": 80,
-                    "https_port": 443,
-                    "origin_keepalive_timeout": 5,
-                    "origin_protocol_policy": "http-only",
-                    "origin_read_timeout": 30,
-                    "origin_ssl_protocols": [
-                      "TLSv1.1",
-                      "TLSv1.2"
-                    ]
-                  }
-                ],
-                "domain_name": "kloud-webpage.s3-website.ap-northeast-2.amazonaws.com",
-                "origin_access_control_id": "",
-                "origin_id": "S3-kloud-webpage",
-                "origin_path": "",
-                "origin_shield": [],
-                "s3_origin_config": []
-              },
-              {
-                "connection_attempts": 3,
-                "connection_timeout": 10,
-                "custom_header": [],
-                "custom_origin_config": [
-                  {
-                    "http_port": 80,
-                    "https_port": 443,
-                    "origin_keepalive_timeout": 5,
-                    "origin_protocol_policy": "https-only",
-                    "origin_read_timeout": 30,
-                    "origin_ssl_protocols": [
-                      "TLSv1.1",
-                      "TLSv1.2"
-                    ]
-                  }
-                ],
-                "domain_name": "1ezekx8bu3.execute-api.ap-northeast-2.amazonaws.com",
-                "origin_access_control_id": "",
-                "origin_id": "API-Gateway-2-Origin",
-                "origin_path": "",
-                "origin_shield": [],
-                "s3_origin_config": []
-              },
-              {
-                "connection_attempts": 3,
-                "connection_timeout": 10,
-                "custom_header": [],
-                "custom_origin_config": [
-                  {
-                    "http_port": 80,
-                    "https_port": 443,
-                    "origin_keepalive_timeout": 5,
-                    "origin_protocol_policy": "https-only",
-                    "origin_read_timeout": 30,
-                    "origin_ssl_protocols": [
-                      "TLSv1.1",
-                      "TLSv1.2"
-                    ]
-                  }
-                ],
-                "domain_name": "nglpet7yod.execute-api.ap-northeast-2.amazonaws.com",
-                "origin_access_control_id": "",
-                "origin_id": "API-Gateway-1-Origin",
-                "origin_path": "",
-                "origin_shield": [],
-                "s3_origin_config": []
-              }
-            ],
-            "origin_group": [],
-            "price_class": "PriceClass_All",
-            "restrictions": [
-              {
-                "geo_restriction": [
-                  {
-                    "locations": [],
-                    "restriction_type": "none"
-                  }
-                ]
-              }
-            ],
-            "retain_on_delete": false,
-            "staging": false,
-            "status": "Deployed",
-            "tags": {
-              "Project": "K-loud"
-            },
-            "tags_all": {
-              "Project": "K-loud"
-            },
-            "trusted_key_groups": [
-              {
-                "enabled": false,
-                "items": []
-              }
-            ],
-            "trusted_signers": [
-              {
-                "enabled": false,
-                "items": []
-              }
-            ],
-            "viewer_certificate": [
-              {
-                "acm_certificate_arn": "arn:aws:acm:us-east-1:941377148616:certificate/3f5a0bc0-4026-4685-a102-dc53b758bedd",
-                "cloudfront_default_certificate": false,
-                "iam_certificate_id": "",
-                "minimum_protocol_version": "TLSv1",
-                "ssl_support_method": "sni-only"
-              }
-            ],
-            "wait_for_deployment": true,
-            "web_acl_id": ""
-          },
-          "sensitive_attributes": [],
-          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
-          "dependencies": [
-            "module.acm.aws_acm_certificate.certificate"
-          ]
-        }
-      ]
-    },
-    {
       "module": "module.iam",
       "mode": "managed",
       "type": "aws_iam_policy",
@@ -981,15 +670,15 @@
           "schema_version": 0,
           "attributes": {
             "arn": "arn:aws:iam::941377148616:policy/K-loud-cloudfront-s3-access",
-            "attachment_count": 1,
+            "attachment_count": 0,
             "description": "",
             "id": "arn:aws:iam::941377148616:policy/K-loud-cloudfront-s3-access",
             "name": "K-loud-cloudfront-s3-access",
             "name_prefix": "",
             "path": "/",
             "policy": "{\"Statement\":[{\"Action\":[\"s3:GetObject\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:s3:::kloud-webpage/*\"]}],\"Version\":\"2012-10-17\"}",
-            "policy_id": "ANPA5WLTTK3EIGTJH67Z6",
-            "tags": {},
+            "policy_id": "ANPA5WLTTK3EHOOR5DQWO",
+            "tags": null,
             "tags_all": {}
           },
           "sensitive_attributes": [],
@@ -1009,22 +698,20 @@
           "attributes": {
             "arn": "arn:aws:iam::941377148616:role/K-loud-cloudfront-role",
             "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudfront.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
-            "create_date": "2024-12-19T06:41:09Z",
+            "create_date": "2024-12-19T03:41:06Z",
             "description": "",
             "force_detach_policies": false,
             "id": "K-loud-cloudfront-role",
             "inline_policy": [],
-            "managed_policy_arns": [
-              "arn:aws:iam::941377148616:policy/K-loud-cloudfront-s3-access"
-            ],
+            "managed_policy_arns": [],
             "max_session_duration": 3600,
             "name": "K-loud-cloudfront-role",
             "name_prefix": "",
             "path": "/",
             "permissions_boundary": "",
-            "tags": {},
+            "tags": null,
             "tags_all": {},
-            "unique_id": "AROA5WLTTK3EH5YZ6ZUNE"
+            "unique_id": "AROA5WLTTK3EJZLCTEKAU"
           },
           "sensitive_attributes": [],
           "private": "bnVsbA=="
@@ -1041,7 +728,7 @@
         {
           "schema_version": 0,
           "attributes": {
-            "id": "K-loud-cloudfront-role-20241219064215246400000001",
+            "id": "K-loud-cloudfront-role-20241219034107211400000003",
             "policy_arn": "arn:aws:iam::941377148616:policy/K-loud-cloudfront-s3-access",
             "role": "K-loud-cloudfront-role"
           },
@@ -1057,51 +744,6 @@
     {
       "module": "module.route53",
       "mode": "managed",
-      "type": "aws_route53_record",
-      "name": "cloudfront_record",
-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
-      "instances": [
-        {
-          "schema_version": 2,
-          "attributes": {
-            "alias": [
-              {
-                "evaluate_target_health": false,
-                "name": "dkig80szvcghf.cloudfront.net",
-                "zone_id": "Z2FDTNDATAQYW2"
-              }
-            ],
-            "allow_overwrite": null,
-            "cidr_routing_policy": [],
-            "failover_routing_policy": [],
-            "fqdn": "ms.someone0705.xyz",
-            "geolocation_routing_policy": [],
-            "geoproximity_routing_policy": [],
-            "health_check_id": "",
-            "id": "Z0549365YNL797AGFSKN_ms.someone0705.xyz_A",
-            "latency_routing_policy": [],
-            "multivalue_answer_routing_policy": false,
-            "name": "ms.someone0705.xyz",
-            "records": [],
-            "set_identifier": "",
-            "ttl": 0,
-            "type": "A",
-            "weighted_routing_policy": [],
-            "zone_id": "Z0549365YNL797AGFSKN"
-          },
-          "sensitive_attributes": [],
-          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjIifQ==",
-          "dependencies": [
-            "module.acm.aws_acm_certificate.certificate",
-            "module.cloudfront.aws_cloudfront_distribution.distribution",
-            "module.route53.aws_route53_zone.zone"
-          ]
-        }
-      ]
-    },
-    {
-      "module": "module.route53",
-      "mode": "managed",
       "type": "aws_route53_zone",
       "name": "zone",
       "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
@@ -1109,23 +751,23 @@
         {
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:route53:::hostedzone/Z0549365YNL797AGFSKN",
+            "arn": "arn:aws:route53:::hostedzone/Z01864021CTC3EYU9MPP7",
             "comment": "Managed by Terraform",
             "delegation_set_id": "",
             "force_destroy": false,
-            "id": "Z0549365YNL797AGFSKN",
+            "id": "Z01864021CTC3EYU9MPP7",
             "name": "ms.someone0705.xyz",
             "name_servers": [
-              "ns-1440.awsdns-52.org",
-              "ns-1649.awsdns-14.co.uk",
-              "ns-669.awsdns-19.net",
-              "ns-95.awsdns-11.com"
+              "ns-1172.awsdns-18.org",
+              "ns-2038.awsdns-62.co.uk",
+              "ns-357.awsdns-44.com",
+              "ns-554.awsdns-05.net"
             ],
-            "primary_name_server": "ns-669.awsdns-19.net",
-            "tags": {},
+            "primary_name_server": "ns-357.awsdns-44.com",
+            "tags": null,
             "tags_all": {},
             "vpc": [],
-            "zone_id": "Z0549365YNL797AGFSKN"
+            "zone_id": "Z01864021CTC3EYU9MPP7"
           },
           "sensitive_attributes": [],
           "private": "bnVsbA=="

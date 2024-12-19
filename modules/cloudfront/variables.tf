@@ -21,11 +21,16 @@ variable "s3_website_endpoint" {
   type        = string
 }
 
-// VPC Endpoint Configuration
-variable "vpc_endpoint_dns_name" {
-  description = "DNS name of the VPC Endpoint for API Gateway"
+// API-Gateway Configuration
+variable "api_gateway_1_endpoint" {
+  description = "The endpoint of the first API Gateway"
   type        = string
 }
+
+# variable "api_gateway_2_endpoint" {
+#   description = "The endpoint of the second API Gateway"
+#   type        = string
+# }
 
 // ACM Certificate
 variable "acm_certificate_arn" {
