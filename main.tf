@@ -65,7 +65,7 @@ module "alb" {
 # Route53 
 module "route53" {
   source                 = "./modules/route53"
-  domain_name            = "ms.someone0705.xyz"
+  domain_name            = "hon9.xyz"
   cloudfront_domain_name = module.cloudfront.cloudfront_domain_name
   cloudfront_zone_id     = "Z2FDTNDATAQYW2" # Default CloudFront Zone ID
 }
