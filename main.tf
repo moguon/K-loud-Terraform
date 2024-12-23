@@ -27,41 +27,6 @@ module "alb" {
 
 }
 
-# // Create the VPC Endpoint for s3
-# resource "aws_vpc_endpoint" "s3_endpoint" {
-#   vpc_id        = module.vpc.vpc_id
-#   service_name  = "com.amazonaws.ap-northeast-2.s3"
-#   vpc_endpoint_type   = "Gateway"
-#   route_table_ids = [module.vpc.private_route_table_id]
-#   tags = {
-#     Name = "${var.project_name}-s3-endpoint"
-#   }
-# }
-
-# // Create the VPC Endpoint for DynamoDB
-# resource "aws_vpc_endpoint" "dynamodb_endpoint" {
-#   vpc_id            = module.vpc.vpc_id
-#   service_name      = "com.amazonaws.ap-northeast-2.dynamodb"
-#   vpc_endpoint_type = "Gateway"
-#   route_table_ids   = [module.vpc.private_route_table_id]
-#   tags = {
-#     Name = "${var.project_name}-dynamodb-endpoint"
-#   }
-# }
-
-# // Create the VPC Endpoint for API Gateway
-# resource "aws_vpc_endpoint" "api_gateway_endpoint" {
-#   vpc_id              = module.vpc.vpc_id
-#   service_name        = "com.amazonaws.ap-northeast-2.execute-api"
-#   vpc_endpoint_type   = "Interface"
-#   subnet_ids          = module.vpc.private_subnet_ids
-#   security_group_ids  = [aws_security_group.vpc_endpoint_sg.id]
-#   private_dns_enabled = true
-#   tags = {
-#     Name = "${var.project_name}-api-gateway-endpoint"
-#   }
-# }
-
 # Route53 
 module "route53" {
   source                 = "./modules/route53"
@@ -101,13 +66,6 @@ module "cloudfront" {
     }
 }
 
-
-# # Lambda 함수 생성
-# module "lambda" {
-#   source        = "./modules/lambda"
-#   function_name = "${var.project_name}-lambda"
-#   code_path     = "lambda/function.zip"
-# }
 
 
 # # WAF (웹 방화벽) 생성
