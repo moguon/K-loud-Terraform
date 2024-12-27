@@ -30,17 +30,17 @@ resource "aws_cloudfront_distribution" "distribution" {
     }
   }
 
-  # origin {
-  #   domain_name = var.api_gateway_2_endpoint
-  #   origin_id   = "API-Gateway-2-Origin"
+  origin {
+    domain_name = var.api_gateway_2_endpoint
+    origin_id   = "API-Gateway-2-Origin"
 
-  #   custom_origin_config {
-  #     http_port              = 80
-  #     https_port             = 443
-  #     origin_protocol_policy = "https-only"
-  #     origin_ssl_protocols   = ["TLSv1.2", "TLSv1.1"]
-  #   }
-  # }
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
 
   // Default Cache Behavior (S3)
   default_cache_behavior {

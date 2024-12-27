@@ -18,16 +18,6 @@ module "vpc" {
   availability_zones  = ["ap-northeast-2a", "ap-northeast-2c"]
 }
 
-# ALB 생성
-module "alb" {
-  source             = "./modules/alb"
-  name               = "${var.project_name}-alb"
-  vpc_id             = module.vpc.vpc_id
-  subnet_ids         = module.vpc.public_subnet_ids
-  security_group_ids = [aws_security_group.alb_sg.id]
-
-}
-
 # Route53 
 module "route53" {
   source                 = "./modules/route53"
