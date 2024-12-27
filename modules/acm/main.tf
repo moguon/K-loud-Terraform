@@ -1,11 +1,4 @@
-provider "aws" {
-  alias  = "us-east-1"
-  region = "us-east-1"
-}
-
-
 resource "aws_acm_certificate" "certificate" {
-  provider          = aws.us-east-1
   domain_name       = var.domain_name
   validation_method = "DNS"
 

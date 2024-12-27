@@ -1,3 +1,4 @@
-output "cloudfront_iam_role_arn" {
-  value = aws_iam_role.cloudfront_role.arn
+output "iam_role_arn" {
+  description = "The ARN of the IAM role"
+  value       = aws_iam_role.lambda_role.arn
 }

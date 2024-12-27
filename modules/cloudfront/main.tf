@@ -81,25 +81,25 @@ resource "aws_cloudfront_distribution" "distribution" {
     max_ttl     = 86400
   }
 
-  # # Additional cache behavior for API Gateway 2
-  # ordered_cache_behavior {
-  #   path_pattern           = "/api2/*"
-  #   target_origin_id       = "API-Gateway-2-Origin"
-  #   viewer_protocol_policy = "redirect-to-https"
-  #   allowed_methods        = ["GET", "HEAD", "OPTIONS"]
-  #   cached_methods         = ["GET", "HEAD"]
+# Additional cache behavior for API Gateway 2
+  ordered_cache_behavior {
+    path_pattern           = "/api2/*"
+    target_origin_id       = "API-Gateway-2-Origin"
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    cached_methods         = ["GET", "HEAD"]
 
-  #   forwarded_values {
-  #     query_string = true
-  #     cookies {
-  #       forward = "all"
-  #     }
-  #   }
+    forwarded_values {
+      query_string = true
+      cookies {
+        forward = "all"
+      }
+    }
 
-  #   min_ttl     = 0
-  #   default_ttl = 3600
-  #   max_ttl     = 86400
-  # }
+    min_ttl     = 0
+    default_ttl = 3600
+    max_ttl     = 86400
+  }
 
   restrictions {
     geo_restriction {

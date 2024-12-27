@@ -27,10 +27,10 @@ variable "api_gateway_1_endpoint" {
   type        = string
 }
 
-# variable "api_gateway_2_endpoint" {
-#   description = "The endpoint of the second API Gateway"
-#   type        = string
-# }
+variable "api_gateway_2_endpoint" {
+  description = "The endpoint of the second API Gateway"
+  type        = string
+}
 
 // ACM Certificate
 variable "acm_certificate_arn" {

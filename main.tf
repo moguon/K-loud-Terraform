@@ -7,7 +7,8 @@ terraform {
   }
 }
 
-# VPC 생성
+
+#VPC 생성
 module "vpc" {
   source              = "./modules/vpc"
   name                = "${var.project_name}-vpc"
@@ -30,7 +31,7 @@ module "alb" {
 # Route53 
 module "route53" {
   source                 = "./modules/route53"
-  domain_name            = "hon9.xyz"
+  domain_name            = "www.hon9.xyz"
   cloudfront_domain_name = module.cloudfront.cloudfront_domain_name
   cloudfront_zone_id     = "Z2FDTNDATAQYW2" # Default CloudFront Zone ID
 }
@@ -38,6 +39,9 @@ module "route53" {
 # ACM
 module "acm" {
   source         = "./modules/acm"
+  providers = {
+  aws = aws.us-east-1
+}
   domain_name    = var.domain_name
   route53_zone_id = module.route53.zone_id
   tags           = {
@@ -47,11 +51,16 @@ module "acm" {
 
 #IAM
 module "iam" {
-  source = "./modules/iam"
-
-  project_name   = var.project_name
-  s3_bucket_arn  = "arn:aws:s3:::kloud-webpage" 
+  source       = "./modules/iam"
+  role_name    = "lambda_execution_role"
+  
+  managed_policies = [
+    "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator",
+    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  ]
 }
+
 
 #CloudFront 생성
 module "cloudfront" {
@@ -60,17 +69,8 @@ module "cloudfront" {
   s3_bucket_name       = "kloud-webpage"
   s3_website_endpoint = "kloud-webpage.s3-website.ap-northeast-2.amazonaws.com"
   api_gateway_1_endpoint = "nglpet7yod.execute-api.ap-northeast-2.amazonaws.com"
-  # api_gateway_2_endpoint = "1ezekx8bu3.execute-api.ap-northeast-2.amazonaws.com"
+  api_gateway_2_endpoint = "1ezekx8bu3.execute-api.ap-northeast-2.amazonaws.com"
   tags           = {
     Project = var.project_name
     }
 }
-
-
-
-# # WAF (웹 방화벽) 생성
-# module "waf" {
-#   source = "./modules/waf"
-#   name   = "${var.project_name}-waf"
-# }
-

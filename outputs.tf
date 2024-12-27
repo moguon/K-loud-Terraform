@@ -33,10 +33,10 @@ output "acm_certificate_arn" {
   value       = module.acm.certificate_arn
 }
 
-# output "vpc_endpoint_dns_name" {
-#   description = "The DNS name of the VPC Endpoint for API Gateway"
-#   value       = aws_vpc_endpoint.api_gateway_endpoint.dns_entry[0].dns_name
-# }
+output "vpc_endpoint_dns_name" {
+  description = "The DNS name of the VPC Endpoint for API Gateway"
+  value       = aws_vpc_endpoint.api_gateway_endpoint.dns_entry[0].dns_name
+}
 
 output "cloudfront_distribution_id" {
   description = "The ID of the CloudFront distribution"
@@ -52,12 +52,3 @@ output "route53_hosted_zone_id" {
   description = "The ID of the Route53 hosted zone"
   value       = module.route53.zone_id
 }
-
-
-# output "lambda_function_name" {
-#   value = module.lambda.function_name
-# }
-
-# output "api_gateway_url" {
-#   value = module.api_gateway.api_url
-# }

@@ -104,33 +104,16 @@ resource "aws_route_table_association" "private_route_association" {
   route_table_id = aws_route_table.private_route_table.id
 }
 
-# // ---
-# // Create an Auto Scaling Group
-# // ---
-# resource "aws_autoscaling_group" "asg" {
-#   launch_template {
-#     id      = aws_launch_template.launch_template.id
-#     version = "$Latest"
-#   }
+// ---
+// Create an Auto Scaling Group
+// ---
+resource "aws_autoscaling_group" "asg" {
 
-#   vpc_zone_identifier = aws_subnet.private_subnet[*].id
+  vpc_zone_identifier = aws_subnet.private_subnet[*].id
+  min_size         = var.asg_min_size 
+  max_size         = var.asg_max_size 
+  desired_capacity = var.asg_desired_capacity 
 
-#   min_size         = var.asg_min_size // Minimum number of instances (e.g., 1)
-#   max_size         = var.asg_max_size // Maximum number of instances (e.g., 5)
-#   desired_capacity = var.asg_desired_capacity // Desired number of instances (e.g., 2)
+  instance_id = "i-05dd0a591b5234e26"
 
-#   health_check_type         = "EC2"
-#   health_check_grace_period = 300
-
-#   tags = [
-#     {
-#       key                 = "Name"
-#       value               = "${var.name}-asg-instance"
-#       propagate_at_launch = true
-#     }
-#   ]
-
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-# }
+}
